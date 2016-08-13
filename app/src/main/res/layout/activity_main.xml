@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
     tools:context="it.grab.grabbit.grabbit.MainActivity">
 
     <!--<Button-->
@@ -22,5 +23,7 @@
         android:id="@+id/scan_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/scan_button"/>
+        android:src="@drawable/scan_button"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button"/>
 </RelativeLayout>

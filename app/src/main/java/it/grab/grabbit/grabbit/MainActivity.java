@@ -1,9 +1,12 @@
 package it.grab.grabbit.grabbit;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -11,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.CaptureActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +22,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // in Activity#onCreate
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.custom_actionbar);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
+
+
+
 
 
         ImageButton scanBtn = (ImageButton) findViewById(R.id.scan_btn);
@@ -33,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void scanBarcode(View view) {
         IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setOrientationLocked(false);
+        integrator.setOrientationLocked(true);
+        integrator.setCaptureActivity(CaptureActivityPortrait.class);
         integrator.setPrompt("סרוק ברקוד");
         integrator.initiateScan();
     }
@@ -50,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(MainActivity.this, ProductInfo.class);
                 intent.putExtra("barcode", result.getContents());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                // This next line ruins the back button functionality
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                //finish(); // maybe this is not needed
             }
         } else {
             // This is important, otherwise the result will not be passed to the fragment
@@ -60,3 +73,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+

@@ -16,15 +16,25 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="sensorPortrait"
-            tools:replace="screenOrientation">
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation"
+            android:launchMode="standard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProductInfo"></activity>
+        <activity android:name=".ProductInfo" />
+        <activity
+            android:name=".CaptureActivityPortrait"
+            android:screenOrientation="portrait"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:label="@string/title_activity_capture_activity_portrait">
+
+        </activity>
+
     </application>
 
 </manifest>
