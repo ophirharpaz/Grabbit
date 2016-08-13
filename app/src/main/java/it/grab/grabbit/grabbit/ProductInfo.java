@@ -3,6 +3,7 @@ package it.grab.grabbit.grabbit;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,8 +25,11 @@ public class ProductInfo extends AppCompatActivity {
     ArrayList<Product> alternateProductsLst;
     Product currProduct;
     ImageView productImage;
+    ImageView veganStamp;
+    ImageView notTestedStamp;
     TextView productName;
     TextView productCompany;
+
 
     public void setExactSize(ImageView img, int x) {
         img.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
@@ -35,7 +39,7 @@ public class ProductInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_info);
-//        getWindow().getDecorView().setBackgroundColor(Color.parseColor("#9ab7fb")); Solid Color
+//        getWindow().getDecorView().setBackgroundColor(Color.parseColor("#9ab7fb"));
         // in Activity#onCreate
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_actionbar);
@@ -63,7 +67,12 @@ public class ProductInfo extends AppCompatActivity {
         productName = (TextView)findViewById(R.id.product_name);
         productName.setText(currProduct.getName());
         productCompany = (TextView)findViewById(R.id.product_company);
-        productName.setText(currProduct.getCompany());
+        productCompany.setText(currProduct.getCompany());
+
+        // Adjust vegan / tested stamps
+        veganStamp = (ImageView)findViewById(R.id.vegan);
+        notTestedStamp = (ImageView)findViewById(R.id.not_tested);
+        adjustStamps();
 
         // update the alternative images
         LinearLayout altProdsLayout = (LinearLayout)findViewById(R.id.alternative_products);
@@ -98,9 +107,7 @@ public class ProductInfo extends AppCompatActivity {
         } else {
             productImage.setImageBitmap(currProduct.getImage());
         }
-//        setExactSize(productImage, 500);
-        // TODO: update stamps
-        // update texts
+        adjustStamps();
         productCompany.setText(currProduct.getCompany());
         productName.setText(currProduct.getName());
         // update image in list
@@ -112,6 +119,15 @@ public class ProductInfo extends AppCompatActivity {
         }
         setExactSize(lstProdImg, 300);
 
+    }
+
+    private void adjustStamps() {
+        int notTested = currProduct.getStatus() % 2;
+        int vegan = currProduct.getStatus() >> 1;
+        int nt = (notTested == 1) ? R.drawable.not_tested : R.drawable.tested;
+        int veg = (vegan == 1) ? R.drawable.vegan : R.drawable.not_vegan;
+        veganStamp.setImageDrawable(getResources().getDrawable(veg));
+        notTestedStamp.setImageDrawable(getResources().getDrawable(nt));
     }
 
     @Override
